@@ -30,7 +30,7 @@ thplot <- as.data.frame(suma)
 thplot
 p2 <- ggplot(thplot, aes(x=Game, y = diff, fill = diff)) + geom_bar(stat="identity", position = "dodge", width = 0.5)+
   scale_x_discrete(limits =(plotvar$Game)) + labs(y = "difference") +
-  scale_fill_continuous(name = "Legend") + -
+  scale_fill_continuous(name = "Legend")
 
 grid.arrange(p1, p2, ncol = 2)
 
