@@ -14,11 +14,11 @@ Summoner.Info <- function(sumname)
   return(ret)
 }
 
-Champion.Data.All <- function()
+Meta.Champions <- function(adopts = "all")
 {
   url <- "https://euw1.api.riotgames.com"
   apitree <- "/lol/static-data/v3/champions"
-  url <- paste(url, apitree, "?champData=all&api_key=", key, sep="")
+  url <- paste(url, apitree,"?champData=", adopts,"&api_key=", key, sep="")
   print(url)
   req <- httr::GET(url)
   json <- httr::content(req, as = "text")
@@ -84,11 +84,6 @@ Meta.Items <- function()
   json <- httr::content(req, as = "text")
   ret <- fromJSON(json)
   return(ret)             
-}
-
-Test <- function(num)
-{
-  return(num)
 }
 
 Time.Requests <- function(j)
