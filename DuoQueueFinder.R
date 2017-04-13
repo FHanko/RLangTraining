@@ -4,12 +4,22 @@ library(dplyr)
 library(grid)
 library(gridExtra)
 
+PlotDQF <- function(sumname)
+{
+print(sumname)
 source("RiotApiFunctions.R", local = TRUE)
 
-match.current <- Summoner.Current(Summoner.Info("Mango%20MSev")$id)
+match.current <- Summoner.Current(Summoner.Info(sumname)$id)
 match.current.sum.ids <- match.current$participants$summonerId
 cmatchpar.names <- match.current$participants$summonerName
 cmatchpar.names
+
+# Development
+#match.current <- Summoner.Matches(Summoner.Info(sumname)$id)
+#match.current <- Summoner.Match(head(match.current$matches$matchId, 1))
+#match.current.sum.ids <- match.current$participantIdentities$player$summonerId
+#cmatchpar.names <- match.current$participantIdentities$player$summonerName
+#
 
 j= NULL
 j$fun <- c(rep("Summoner.Matches",10))
@@ -19,7 +29,8 @@ j
 
 matches.By.Par <- Time.Requests(j)
 match.ids.agr <- NULL
-for (i in 1:length(matchesByPar))
+i <- 0
+for (i in 1:length(matches.By.Par))
 {
   match.ids.By.Par <- NULL
   match.ids.By.Par$mid <- head(matches.By.Par[[i]]$matches$matchId, 10)
@@ -28,7 +39,7 @@ for (i in 1:length(matchesByPar))
   match.ids.agr <- rbind(match.ids.agr, match.ids.By.Par)
 }
 match.ids.agr$id <- NULL
-
+print(match.ids.agr)
 # deprecated?
 dups <- match.ids.agr[ duplicated(match.ids.agr$mid) ,]$mid
 pre <- match.ids.agr[ which(match.ids.agr$mid %in% dups) ,]
@@ -46,6 +57,8 @@ other.df
 
 table(pre)
 
-ggplot(other.df, aes(x = other.df$master, y = 1, fill = other.df$sum.Name)) + geom_bar(stat = "identity") +
+DQFplot <- ggplot(other.df, aes(x = other.df$master, y = 1, fill = other.df$sum.Name)) + geom_bar(stat = "identity") +
   labs(x = "Summoner", y = "Games played with players in this match") +
   scale_fill_discrete(name = "Duo Partner") + scale_y_continuous(breaks = 1:10)
+return(DQFplot)
+}

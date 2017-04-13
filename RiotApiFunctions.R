@@ -8,10 +8,7 @@ Summoner.Info <- function(sumname)
   url <- "https://euw1.api.riotgames.com"
   apitree <- paste("/lol/summoner/v3/summoners/by-name/", sumname, sep = "")
   url <- paste(url, apitree, "?api_key=", key, sep = "")
-  req <- httr::GET(url)
-  json <- httr::content(req, as = "text")
-  ret <- fromJSON(json)
-  return(ret)
+  return(Get.JSON(url))    
 }
 
 Meta.Champions <- function(adopts = "all")
@@ -19,11 +16,7 @@ Meta.Champions <- function(adopts = "all")
   url <- "https://euw1.api.riotgames.com"
   apitree <- "/lol/static-data/v3/champions"
   url <- paste(url, apitree,"?champData=", adopts,"&api_key=", key, sep="")
-  print(url)
-  req <- httr::GET(url)
-  json <- httr::content(req, as = "text")
-  ret <- fromJSON(json)
-  return(ret)
+  return(Get.JSON(url))    
 }
 
 Summoner.Mastery <- function(sumid)
@@ -31,11 +24,7 @@ Summoner.Mastery <- function(sumid)
   url <- "https://euw.api.riotgames.com"
   apitree <- paste("/championmastery/location/EUW1/player/", sumid,"/champions", sep="")
   url <- paste(url, apitree, "?api_key=", key, sep = "")
-  print(url)
-  req <- httr::GET(url)
-  json <- httr::content(req, as = "text")
-  ret <- fromJSON(json)
-  return(ret)
+  return(Get.JSON(url))    
 }
 
 Summoner.Recent <- function(sumid)
@@ -43,11 +32,7 @@ Summoner.Recent <- function(sumid)
   url <- "https://euw.api.riotgames.com"
   apitree <- paste("/api/lol/EUW/v1.3/game/by-summoner/", sumid,"/recent", sep="")
   url <- paste(url, apitree, "?api_key=", key, sep = "")
-  print(url)
-  req <- httr::GET(url)
-  json <- httr::content(req, as = "text")
-  ret <- fromJSON(json)
-  return(ret)
+  return(Get.JSON(url))    
 }
 
 Summoner.Current <- function(sumid)
@@ -55,11 +40,7 @@ Summoner.Current <- function(sumid)
   url <- "https://euw.api.riotgames.com"
   apitree <- paste("/observer-mode/rest/consumer/getSpectatorGameInfo/EUW1/", sumid, sep="")
   url <- paste(url, apitree, "?api_key=", key, sep = "")
-  print(url)
-  req <- httr::GET(url)
-  json <- httr::content(req, as = "text")
-  ret <- fromJSON(json)
-  return(ret)
+  return(Get.JSON(url))    
 }
 
 Summoner.Matches <- function(sumid)
@@ -67,11 +48,7 @@ Summoner.Matches <- function(sumid)
   url <- "https://euw.api.riotgames.com"
   apitree <- paste("/api/lol/EUW/v2.2/matchlist/by-summoner/", sumid, sep="")
   url <- paste(url, apitree, "?api_key=", key, sep = "")
-  print(url)
-  req <- httr::GET(url)
-  json <- httr::content(req, as = "text")
-  ret <- fromJSON(json)
-  return(ret)
+  return(Get.JSON(url))    
 }
 
 Summoner.Match <- function(mid)
@@ -79,11 +56,7 @@ Summoner.Match <- function(mid)
   url <- "https://euw.api.riotgames.com"
   apitree <- paste("/api/lol/EUW/v2.2/match/", mid, sep="")
   url <- paste(url, apitree, "?api_key=", key, sep = "")
-  print(url)
-  req <- httr::GET(url)
-  json <- httr::content(req, as = "text")
-  ret <- fromJSON(json)
-  return(ret)
+  return(Get.JSON(url))    
 }
 
 Meta.Items <- function()
@@ -91,11 +64,17 @@ Meta.Items <- function()
   url <- "https://euw1.api.riotgames.com"
   apitree <- "/lol/static-data/v3/items"
   url <- paste(url, apitree, "?api_key=", key, sep = "")
-  print(url)
-  req <- httr::GET(url)
+  return(Get.JSON(url))    
+}
+
+Get.JSON <-function(geturl)
+{
+  print(geturl)
+  req <- httr::GET(geturl)
   json <- httr::content(req, as = "text")
   ret <- fromJSON(json)
-  return(ret)             
+  print(as.character(ret$status$status_code))
+  return(ret)   
 }
 
 Time.Requests <- function(j)
@@ -111,7 +90,7 @@ Time.Requests <- function(j)
     {
     ret <- append(ret, list(f(argtt)))    
     }
-    Sys.sleep(1.2)
+    Sys.sleep(2)
   }
   return(ret)
 }
