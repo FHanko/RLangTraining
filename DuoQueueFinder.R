@@ -6,18 +6,14 @@ library(gridExtra)
 
 source("RiotApiFunctions.R", local = TRUE)
 
-matchagr <- Summoner.Matches(Summoner.Info("Mango%20MSev")$id)
-matchagr <- head(matchagr$matches$matchId, 1)
-matchagr
-
-cmatch <- Summoner.Match(matchagr[1])
-cmatchpar <- cmatch$participantIdentities$player$summonerId
-cmatchpar
-cmatchpar.names <- cmatch$participantIdentities$player$summonerName
+match.current <- Summoner.Current(Summoner.Info("Mango%20MSev")$id)
+match.current.sum.ids <- match.current$participants$summonerId
+cmatchpar.names <- match.current$participants$summonerName
 cmatchpar.names
+
 j= NULL
 j$fun <- c(rep("Summoner.Matches",10))
-j$par <- cmatchpar
+j$par <- match.current.sum.ids
 j <- as.data.frame(j, ncol(2))
 j
 
@@ -52,4 +48,4 @@ table(pre)
 
 ggplot(other.df, aes(x = other.df$master, y = 1, fill = other.df$sum.Name)) + geom_bar(stat = "identity") +
   labs(x = "Summoner", y = "Games played with players in this match") +
-  scale_fill_discrete(name = "Duo Partner")
+  scale_fill_discrete(name = "Duo Partner") + scale_y_continuous(breaks = 1:10)
