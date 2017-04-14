@@ -73,7 +73,20 @@ Get.JSON <-function(geturl)
   req <- httr::GET(geturl)
   json <- httr::content(req, as = "text")
   ret <- fromJSON(json)
-  print(as.character(ret$status$status_code))
+  stat <- ret$status$status_code
+  if(!is.null(stat))
+  {
+    if(stat == 503)
+    {
+      print(paste(stat, ":No Success will repeat in 2 seconds"))
+      Sys.sleep(2)  
+      return(Get.JSON(geturl))
+    }
+    else
+    {
+      print(paste("No ex for", stat))
+    }
+  }
   return(ret)   
 }
 
@@ -90,7 +103,7 @@ Time.Requests <- function(j)
     {
     ret <- append(ret, list(f(argtt)))    
     }
-    Sys.sleep(2)
+    Sys.sleep(1.2)
   }
   return(ret)
 }

@@ -1,4 +1,4 @@
-rm(list = ls())
+
 library(shiny)
 library(ggplot2)
 
@@ -12,17 +12,14 @@ ui <- fluidPage(
   mainPanel(plotOutput("plot2")))
 
 server <- function(input,output){
-  v <- reactiveValues(doPlot = FALSE)
-  observeEvent(input$go, {
-    # 0 will be coerced to FALSE
-    # 1+ will be coerced to TRUE
-    v$doPlot <- input$go
+  v <- eventReactive(input$go, {
   })
   output$plot2<-renderPlot({
-    if(v$doPlot == FALSE) return()
-    print(input$sumname)
+    if(input$go != 0)
+    {
     dist <- isolate(input$sumname)
     PlotDQF(dist)
+    }
   })
   }
 shinyApp(ui, server)

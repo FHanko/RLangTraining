@@ -39,7 +39,7 @@ for (i in 1:length(matches.By.Par))
   match.ids.agr <- rbind(match.ids.agr, match.ids.By.Par)
 }
 match.ids.agr$id <- NULL
-print(match.ids.agr)
+print(length(match.ids.agr))
 # deprecated?
 dups <- match.ids.agr[ duplicated(match.ids.agr$mid) ,]$mid
 pre <- match.ids.agr[ which(match.ids.agr$mid %in% dups) ,]
