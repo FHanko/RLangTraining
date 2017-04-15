@@ -59,6 +59,6 @@ table(pre)
 
 DQFplot <- ggplot(other.df, aes(x = other.df$master, y = 1, fill = other.df$sum.Name)) + geom_bar(stat = "identity") +
   labs(x = "Summoner", y = "Games played with players in this match") +
-  scale_fill_discrete(name = "Duo Partner") + scale_y_continuous(breaks = 1:10)
+  scale_fill_discrete(name = "Player recently with") + scale_y_continuous(breaks = 1:10)
 return(DQFplot)
 }

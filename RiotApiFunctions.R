@@ -27,6 +27,14 @@ Summoner.Mastery <- function(sumid)
   return(Get.JSON(url))    
 }
 
+Summoner.Summary <- function()
+{
+  url <- "https://euw.api.riotgames.com"
+  apitree <- paste("/api/lol/EUW/v1.3/stats/by-summoner/", sumid,"/summary", sep="")
+  url <- paste(url, apitree, "?api_key=", key, sep = "")
+  return(Get.JSON(url))    
+}
+
 Summoner.Recent <- function(sumid)
 {
   url <- "https://euw.api.riotgames.com"
@@ -93,14 +101,16 @@ Get.JSON <-function(geturl)
 Time.Requests <- function(j)
 {
   ret = NULL
-  i <- 0
-  for (i in 1:nrow(j)) {
-    print(i)
-    argtt <- list(j[i,]$par)
-    f <- get(as.character(j[i,]$fun))
-    if(i == 1) {ret <- list(f(argtt))}
+  Time.Progress <- 0
+  Global.Time.Max <<- 1:nrow(j)
+  for (Time.Progress in Time.Max) {
+    print(Time.Progress)
+    Global.Time.Progress <<- Time.Progress
+    argtt <- list(j[Time.Progress,]$par)
+    f <- get(as.character(j[Time.Progress,]$fun))
+    if(Time.Progress == 1) {ret <- list(f(argtt))}
     else
-    {
+    { 
     ret <- append(ret, list(f(argtt)))    
     }
     Sys.sleep(1.2)
